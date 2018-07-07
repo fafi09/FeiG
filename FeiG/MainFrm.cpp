@@ -19,6 +19,7 @@ IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	//ON_WM_SETFOCUS()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -119,5 +120,29 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//pContext->m_pCurrentFrame = this;
 	//m_wndSplitter.RecalcLayout();
 	//return CFrameWnd::OnCreateClient(lpcs, pContext);
+
+	CUserView* pUserView = (CUserView*)
+	m_wndSplitter.GetPane(0,0);
+
+	CChatView* pChatView = (CChatView*)m_wndSplitter.GetPane(1,0);
+
+	m_UserServer.m_pUserView = pUserView;
+	m_UserServer.m_pChatView = pChatView;
+
 	return TRUE;
+}
+
+void CMainFrame::Initialize()
+{
+	m_UserClient.InitClient();
+
+	m_UserClient.Broadcast();
+	SetTimer(1, 5000*10, NULL);
+}
+
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	m_UserClient.Broadcast();
+	CFrameWnd::OnTimer(nIDEvent);
 }

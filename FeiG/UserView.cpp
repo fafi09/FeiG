@@ -58,3 +58,14 @@ int CUserView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	return 0;
 }
+
+
+void CUserView::AddUser(CString strName, CString strIP, CString strSign)
+{
+	CListCtrl& theCtrl = GetListCtrl();
+	int nItem = theCtrl.GetItemCount();
+	nItem = theCtrl.InsertItem(nItem,strName);
+	theCtrl.SetItemText(nItem,1, strIP);
+	theCtrl.SetItemText(nItem,2, strSign);
+
+}

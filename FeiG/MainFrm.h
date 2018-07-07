@@ -4,7 +4,8 @@
 
 #pragma once
 #include "ChildView.h"
-
+#include "UserServer.h"
+#include "UserClient.h"
 class CMainFrame : public CFrameWnd
 {
 	
@@ -18,7 +19,7 @@ public:
 
 // ²Ù×÷
 public:
-
+	void Initialize();
 // ÖØÐ´
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -45,6 +46,9 @@ protected:
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 public:
 	CSplitterWnd m_wndSplitter;
+	CUserServer m_UserServer;
+	CUserClient m_UserClient;
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

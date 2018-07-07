@@ -27,8 +27,8 @@ typedef struct _tagUDPPacket
 typedef struct _tagUserBroadcast
 {
 	NETHEADER header;
-	CHAR szName[128];
-	CHAR szSign[128];
+	TCHAR szName[128];
+	TCHAR szSign[128];
 
 }USERBROADCAST,*LPUSERBROADCAST;
 

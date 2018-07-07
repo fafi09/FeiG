@@ -74,9 +74,9 @@ BOOL CUserClient::Broadcast(void)
 	user.header.nDataLength = sizeof(user) - sizeof(NETHEADER);
 
 	DWORD nlen = 128;
-	GetComputerNameA(user.szName,&nlen);
+	GetComputerName(user.szName,&nlen);
 
-	strcpy(user.szSign, "hello");
+	wcscpy(user.szSign, TEXT("hello"));
 
 	sendto(m_ClientSocket, (char*)&user ,sizeof(user),0, (struct sockaddr*)&addr, sizeof(addr));
 
