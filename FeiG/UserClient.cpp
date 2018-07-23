@@ -78,8 +78,61 @@ BOOL CUserClient::Broadcast(void)
 
 	wcscpy(user.szSign, TEXT("hello"));
 
-	sendto(m_ClientSocket, (char*)&user ,sizeof(user),0, (struct sockaddr*)&addr, sizeof(addr));
-
+	int ret = sendto(m_ClientSocket, (char*)&user ,sizeof(user),0, (struct sockaddr*)&addr, sizeof(addr));
+	if(ret == SOCKET_ERROR ) {
+		int _i_err = WSAGetLastError();
+		switch(WSAGetLastError())
+		{
+		case WSAENOTSOCK:
+			break;
+		case WSANOTINITIALISED:
+			//MessageBox(hwnd,TEXT("WSANOTINITIALISED"),TEXT("INITIAL Server ERROR"),MB_OK);
+			break;
+		case WSAENETDOWN:
+			break;
+		case WSAEACCES:
+			break;
+		case WSAEINVAL:
+			break;
+		case WSAEINTR:
+			break;
+		case WSAEINPROGRESS:
+			break;
+		case WSAEFAULT:
+			break;
+		case WSAENETRESET:
+			break;
+		case WSAENOBUFS:
+			break;
+		case WSAENOTCONN:
+			break;
+		case WSAEOPNOTSUPP:
+			break;
+		case WSAESHUTDOWN:
+			break;
+		case WSAEWOULDBLOCK:
+			break;
+		case WSAEMSGSIZE:
+			break;
+		case WSAEHOSTUNREACH:
+			break;
+		case WSAECONNABORTED:
+			break;
+		case WSAECONNRESET:
+			break;
+		case WSAEADDRNOTAVAIL:
+			break;
+		case WSAEAFNOSUPPORT:
+			break;
+		case WSAEDESTADDRREQ:
+			break;
+		case WSAENETUNREACH:
+			break;
+		case WSAETIMEDOUT:
+			break;
+		}
+		return FALSE;
+	}
 	return TRUE;
 }
 

@@ -59,7 +59,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // Î´ÄÜ´´½¨
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
-
+	Initialize();
 	return 0;
 }
 
@@ -134,7 +134,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 void CMainFrame::Initialize()
 {
-	m_UserClient.InitClient();
+	m_UserServer.InitServer();
+	m_UserClient.InitClient(m_hWnd);
 
 	m_UserClient.Broadcast();
 	SetTimer(1, 5000*10, NULL);

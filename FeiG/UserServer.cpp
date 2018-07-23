@@ -59,13 +59,58 @@ UINT CUserServer::UserThread(LPVOID pParam)
 {
 	CUserServer* pthis = (CUserServer*)pParam;
 
+	unsigned   long   maxsize = 0;
+	int size = sizeof(maxsize);
+	getsockopt(pthis->m_SvrSocket,SOL_SOCKET,SO_MAX_MSG_SIZE,(char*)&maxsize,&size);
+
+
 	//循环接收消息
 	while(1)
 	{
 		UDPPACKET packet = {0};
 		struct sockaddr_in addr={0};
 		int nformLen = sizeof(addr);
-		recvfrom(pthis->m_SvrSocket, (char*)&packet, sizeof(packet),0, (sockaddr*)&addr, &nformLen);
+		int ret = recvfrom(pthis->m_SvrSocket, (char*)&packet, sizeof(packet),0, (sockaddr*)&addr, &nformLen);
+
+		//if(ret == SOCKET_ERROR ) {
+		//	int _i_err = WSAGetLastError();
+		//	switch(_i_err)
+		//	{
+		//	case WSANOTINITIALISED:
+		//		//MessageBox(hwnd,TEXT("WSANOTINITIALISED"),TEXT("INITIAL Server ERROR"),MB_OK);
+		//		break;
+		//	case WSAENETDOWN:
+		//		break;
+		//	case WSAEFAULT:
+		//		break;
+		//	case WSAEINTR:
+		//		break;
+		//	case WSAEINPROGRESS:
+		//		break;
+		//	case WSAEINVAL:
+		//		break;
+		//	case WSAEISCONN:
+		//		break;
+		//	case WSAENETRESET:
+		//		break;
+		//	case WSAENOTSOCK:
+		//		break;
+		//	case WSAEOPNOTSUPP:
+		//		break;
+		//	case WSAESHUTDOWN:
+		//		break;
+		//	case WSAEWOULDBLOCK:
+		//		break;
+		//	case WSAEMSGSIZE:
+		//		printf("fff");
+		//		break;
+		//	case WSAETIMEDOUT:
+		//		break;
+		//	case WSAECONNRESET:
+		//		break;
+		//	}
+		//	return FALSE;
+		//}
 
 		CHAR* pszIP = inet_ntoa(addr.sin_addr);
 		wchar_t wszFromIp[64] = {0};  
