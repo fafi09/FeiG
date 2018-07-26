@@ -78,6 +78,12 @@ BOOL CUserClient::Broadcast(void)
 
 	wcscpy(user.szSign, TEXT("hello"));
 
+	// 必须发送缓冲，接收缓冲同时设置
+	//The WSARecvFrom function does not work when a buffer counter greater than one is specified and the receiving datagram size exceeds 1,470 bytes.
+	int nSndBufSet=32*1024;//设置为32K
+	setsockopt(m_ClientSocket,SOL_SOCKET,SO_SNDBUF,(const char*)&nSndBufSet,sizeof(int));
+
+
 	int ret = sendto(m_ClientSocket, (char*)&user ,sizeof(user),0, (struct sockaddr*)&addr, sizeof(addr));
 	if(ret == SOCKET_ERROR ) {
 		int _i_err = WSAGetLastError();
