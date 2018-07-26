@@ -63,7 +63,17 @@ UINT CUserServer::UserThread(LPVOID pParam)
 	int size = sizeof(maxsize);
 	getsockopt(pthis->m_SvrSocket,SOL_SOCKET,SO_MAX_MSG_SIZE,(char*)&maxsize,&size);
 
+	int nRecvBuf = 0;
+	int nRecvBufSize = sizeof(nRecvBuf);
+	getsockopt(pthis->m_SvrSocket,SOL_SOCKET,SO_RCVBUF,(char*)&nRecvBuf,&nRecvBufSize);
 
+	// 接收缓冲区
+	// 必须发送缓冲，接收缓冲同时设置
+	//The WSARecvFrom function does not work when a buffer counter greater than one is specified and the receiving datagram size exceeds 1,470 bytes.
+	int nRecvBufSet=32*1024;//设置为32K
+	setsockopt(pthis->m_SvrSocket,SOL_SOCKET,SO_RCVBUF,(const char*)&nRecvBufSet,sizeof(int));
+
+	getsockopt(pthis->m_SvrSocket,SOL_SOCKET,SO_RCVBUF,(char*)&nRecvBuf,&nRecvBufSize);
 	//循环接收消息
 	while(1)
 	{
@@ -72,45 +82,44 @@ UINT CUserServer::UserThread(LPVOID pParam)
 		int nformLen = sizeof(addr);
 		int ret = recvfrom(pthis->m_SvrSocket, (char*)&packet, sizeof(packet),0, (sockaddr*)&addr, &nformLen);
 
-		//if(ret == SOCKET_ERROR ) {
-		//	int _i_err = WSAGetLastError();
-		//	switch(_i_err)
-		//	{
-		//	case WSANOTINITIALISED:
-		//		//MessageBox(hwnd,TEXT("WSANOTINITIALISED"),TEXT("INITIAL Server ERROR"),MB_OK);
-		//		break;
-		//	case WSAENETDOWN:
-		//		break;
-		//	case WSAEFAULT:
-		//		break;
-		//	case WSAEINTR:
-		//		break;
-		//	case WSAEINPROGRESS:
-		//		break;
-		//	case WSAEINVAL:
-		//		break;
-		//	case WSAEISCONN:
-		//		break;
-		//	case WSAENETRESET:
-		//		break;
-		//	case WSAENOTSOCK:
-		//		break;
-		//	case WSAEOPNOTSUPP:
-		//		break;
-		//	case WSAESHUTDOWN:
-		//		break;
-		//	case WSAEWOULDBLOCK:
-		//		break;
-		//	case WSAEMSGSIZE:
-		//		printf("fff");
-		//		break;
-		//	case WSAETIMEDOUT:
-		//		break;
-		//	case WSAECONNRESET:
-		//		break;
-		//	}
-		//	return FALSE;
-		//}
+		if(ret == SOCKET_ERROR ) {
+			int _i_err = WSAGetLastError();
+			switch(_i_err)
+			{
+			case WSANOTINITIALISED:
+				//MessageBox(hwnd,TEXT("WSANOTINITIALISED"),TEXT("INITIAL Server ERROR"),MB_OK);
+				break;
+			case WSAENETDOWN:
+				break;
+			case WSAEFAULT:
+				break;
+			case WSAEINTR:
+				break;
+			case WSAEINPROGRESS:
+				break;
+			case WSAEINVAL:
+				break;
+			case WSAEISCONN:
+				break;
+			case WSAENETRESET:
+				break;
+			case WSAENOTSOCK:
+				break;
+			case WSAEOPNOTSUPP:
+				break;
+			case WSAESHUTDOWN:
+				break;
+			case WSAEWOULDBLOCK:
+				break;
+			case WSAEMSGSIZE:
+				break;
+			case WSAETIMEDOUT:
+				break;
+			case WSAECONNRESET:
+				break;
+			}
+			return FALSE;
+		}
 
 		CHAR* pszIP = inet_ntoa(addr.sin_addr);
 		wchar_t wszFromIp[64] = {0};  

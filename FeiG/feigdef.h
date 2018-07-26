@@ -18,7 +18,7 @@ typedef struct _tagNetHeader
 typedef struct _tagUDPPacket
 {
 	NETHEADER header;
-	CHAR szData[256];
+	TCHAR szData[256];
 
 }UDPPACKET,*LPUDPPACKET;
 
@@ -47,7 +47,7 @@ typedef struct _tagUserQuit
 typedef struct _tagUserChat
 {
 	NETHEADER header;
-	CHAR szChat[256];
+	TCHAR szChat[256];
 
 }USERCHAT,*LPUSERCHAT;
 
@@ -55,7 +55,7 @@ typedef struct _tagUserChat
 #define NETCMDID_SENDFILE 0x00000004
 typedef struct _tagSendFile
 {
-	CHAR szFileName[256];
+	TCHAR szFileName[256];
 	DWORD nFileLength;
 
 }SENDFILE,*LPSENDFILE;
