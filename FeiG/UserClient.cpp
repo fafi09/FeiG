@@ -54,7 +54,16 @@ BOOL CUserClient::InitClient(HWND hwnd)
 	BOOL bBroadcast = TRUE;
 	setsockopt(m_ClientSocket, SOL_SOCKET, SO_BROADCAST, (char*)&bBroadcast, sizeof(bBroadcast));
 
-
+	//为clientSocket绑定一个网卡
+	SOCKADDR_IN	addrClient	= {0};
+	addrClient.sin_family	= AF_INET;
+	//addrClient.sin_addr.s_addr	= inet_addr("192.168.1.119");
+	addrClient.sin_addr.s_addr	= inet_addr("10.1.4.156");
+	addrClient.sin_port	= 0;	/// 0 表示由系统自动分配端口号
+	if (0 != bind (m_ClientSocket, (sockaddr*)&addrClient, sizeof(addrClient)))
+	{
+		printf ("bind failed.ip=[%s] errno=[%d]\n", "192.168.1.119", WSAGetLastError());
+	}
 	return TRUE;
 }
 
@@ -67,6 +76,10 @@ BOOL CUserClient::Broadcast(void)
 	addr.sin_port = htons(USERSERVER_PORT);
 
 	addr.sin_addr.S_un.S_addr = htonl(INADDR_BROADCAST);
+
+	//255.255.255.255
+	//CHAR* pszIP = inet_ntoa(addr.sin_addr);
+
 
 	USERBROADCAST user = {0};
 	user.header.nCmdID = NETCMDID_USERBROADCAST;

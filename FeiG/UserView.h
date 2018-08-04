@@ -24,6 +24,9 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void AddUser(CString strName, CString strIP, CString strSign);
+	int FindUser(CString strIP);
+	void DelUser(CString strIP);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 
