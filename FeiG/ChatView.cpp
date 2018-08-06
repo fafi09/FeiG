@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "FeiG.h"
 #include "ChatView.h"
-
+#include "UserView.h"
 
 // CChatView
 
@@ -28,6 +28,7 @@ void CChatView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CChatView, CFormView)
+	ON_BN_CLICKED(IDC_SEND_BTN, &CChatView::OnBnClickedSendBtn)
 END_MESSAGE_MAP()
 
 
@@ -49,3 +50,24 @@ void CChatView::Dump(CDumpContext& dc) const
 
 
 // CChatView 消息处理程序
+
+
+void CChatView::OnBnClickedSendBtn()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//
+	CSplitterWnd* pWnd = (CSplitterWnd*)this->GetParent();
+	CUserView* pUserView = (CUserView*)(pWnd->GetPane(0,0));
+	CListCtrl& theCtrl = pUserView->GetListCtrl();
+
+
+	int nIdx = theCtrl.GetNextItem(-1,LVNI_SELECTED);
+
+	if(nIdx != -1)
+	{
+		CString strIP = theCtrl.GetItemText(nIdx,1);
+		MessageBox(strIP);
+	}
+
+	
+}

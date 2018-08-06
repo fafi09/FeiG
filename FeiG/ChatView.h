@@ -1,7 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "resource.h"
-
+#include "UserClient.h"
 
 // CChatView ¥∞ÃÂ ”Õº
 
@@ -29,6 +29,8 @@ protected:
 public:
 	CListBox m_wndChatList;
 	CEdit m_wndChatData;
+	afx_msg void OnBnClickedSendBtn();
+	CUserClient* m_pUserClient;
 };
 
 
