@@ -14,5 +14,7 @@ public:
 	BOOL InitServer(void);
 	static UINT UserThread(LPVOID pParam);
 	BOOL OnUserBroadcast(LPUSERBROADCAST pUserBroadcast, TCHAR * pszIP);
+	BOOL OnUserChat(LPUSERCHAT pUserChat, TCHAR* pszIP);
+	BOOL OnUserQuit(LPUSERQUIT pUserQuit, TCHAR * pszIP);
 };
 

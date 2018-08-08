@@ -11,6 +11,8 @@ public:
 	// ¹ã²¥
 	BOOL Broadcast(void);
 //	BOOL sendData(void);
-	BOOL sendData(CHAR* pszData, UINT nlen, LPCSTR pszIP);
+	BOOL sendData(CHAR* pszData, UINT nlen, LPCTSTR pszIP);
+	BOOL SendChat(CString strIP, CString strData, BOOL bBroadcast);
+	void UserQuit(void);
 };
 

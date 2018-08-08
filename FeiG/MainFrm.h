@@ -49,6 +49,7 @@ public:
 	CUserServer m_UserServer;
 	CUserClient m_UserClient;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnClose();
 };
 
 

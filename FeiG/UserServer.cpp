@@ -130,6 +130,10 @@ UINT CUserServer::UserThread(LPVOID pParam)
 		case NETCMDID_USERBROADCAST:
 			pthis->OnUserBroadcast((LPUSERBROADCAST)&packet, wszFromIp);
 			break;
+		case NETCMDID_USERCHAT:
+			pthis->OnUserChat((LPUSERCHAT)&packet,wszFromIp);
+		case NETCMDID_USERQUIT:
+			pthis->OnUserQuit((LPUSERQUIT)&packet,wszFromIp);
 		}
 
 
@@ -143,5 +147,27 @@ UINT CUserServer::UserThread(LPVOID pParam)
 BOOL CUserServer::OnUserBroadcast(LPUSERBROADCAST pUserBroadcast, TCHAR * pszIP)
 {
 	m_pUserView->AddUser(pUserBroadcast->szName, pszIP, pUserBroadcast->szSign);
+	return TRUE;
+}
+
+
+BOOL CUserServer::OnUserChat(LPUSERCHAT pUserChat, TCHAR* pszIP)
+{
+	if(m_pChatView != NULL)
+	{
+		m_pChatView->AddChat(pUserChat->szChat, pszIP);
+	}
+	return TRUE;
+}
+
+
+BOOL CUserServer::OnUserQuit(LPUSERQUIT pUserQuit, TCHAR * pszIP)
+{
+	if(m_pUserView != NULL)
+	{
+		m_pUserView->DelUser(pszIP);
+	}
+	//关闭服务器端的socket
+	//closesocket(m_SvrSocket);
 	return TRUE;
 }

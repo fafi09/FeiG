@@ -144,6 +144,8 @@ protected:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnClose();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -156,6 +158,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
@@ -169,3 +172,11 @@ void CFeiGApp::OnAppAbout()
 
 
 
+
+
+void CAboutDlg::OnClose()
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDialogEx::OnClose();
+}

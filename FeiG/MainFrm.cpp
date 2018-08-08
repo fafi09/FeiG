@@ -20,6 +20,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	//ON_WM_SETFOCUS()
 	ON_WM_TIMER()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -146,4 +147,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	m_UserClient.Broadcast();
 	//CFrameWnd::OnTimer(nIDEvent);
+}
+
+
+void CMainFrame::OnClose()
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	//客户端退出
+	m_UserClient.UserQuit();
+	CFrameWnd::OnClose();
 }

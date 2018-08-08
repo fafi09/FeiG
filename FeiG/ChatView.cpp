@@ -66,8 +66,24 @@ void CChatView::OnBnClickedSendBtn()
 	if(nIdx != -1)
 	{
 		CString strIP = theCtrl.GetItemText(nIdx,1);
+		CString msg;
+		m_wndChatData.GetWindowTextW(msg);
+
+		m_pUserClient->SendChat(strIP,msg,FALSE);
+
 		MessageBox(strIP);
 	}
 
 	
+}
+
+
+void CChatView::AddChat(CString strChat, CString strIP)
+{
+	CTime tmCur = CTime::GetCurrentTime();
+	CString strTime = tmCur.Format("%Y-%m-%d %H:%M:%S");
+
+	CString strData = strIP + TEXT(" ") + strTime + TEXT(":") + strChat;
+	int nItem = m_wndChatList.AddString(strData);
+	m_wndChatList.SetCurSel(nItem);
 }

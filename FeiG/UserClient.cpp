@@ -161,7 +161,64 @@ BOOL CUserClient::Broadcast(void)
 //}
 
 
-BOOL CUserClient::sendData(CHAR* pszData, UINT nlen, LPCSTR pszIP)
+BOOL CUserClient::sendData(CHAR* pszData, UINT nlen, LPCTSTR pszIP)
 {
+	SOCKET _socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	sockaddr_in addr = {0};
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(USERSERVER_PORT);
+
+	if(pszIP == NULL)
+	{
+		//ip为空广播数据
+		addr.sin_addr.S_un.S_addr = htonl(INADDR_BROADCAST);
+		//发送广播数据
+		sendto(m_ClientSocket, pszData, nlen, 0, (sockaddr*)&addr, sizeof(addr));
+	}
+	else
+	{
+		char cip[30] ;
+		wcstombs(cip, pszIP, ((CString)pszIP).GetLength() * 2);  
+
+		addr.sin_addr.S_un.S_addr = inet_addr(cip);
+
+		sendto(_socket, pszData, nlen, 0, (sockaddr*)&addr, sizeof(addr));
+
+		closesocket(_socket);
+	}
+	
 	return TRUE;
+}
+
+
+BOOL CUserClient::SendChat(CString strIP, CString strData, BOOL bBroadcast)
+{
+	USERCHAT userChat = {0};
+	userChat.header.nVersion = 1;
+	userChat.header.nCmdID = NETCMDID_USERCHAT;
+	userChat.header.nDataLength = sizeof(userChat) - sizeof(userChat.header);
+
+	wcscpy(userChat.szChat, strData);
+
+	//指定ip的非广播数据
+	sendData((LPSTR)&userChat,sizeof(userChat),strIP);
+
+	return TRUE;
+}
+
+
+void CUserClient::UserQuit(void)
+{
+	USERQUIT quit={0};
+	quit.header.nVersion = 1;
+	quit.header.nCmdID = NETCMDID_USERQUIT;
+	quit.header.nDataLength = sizeof(quit) - sizeof(quit.header);
+
+	quit.nExitCode = 0;
+
+	//把退出的广播包发送出去
+	sendData((LPSTR)&quit,sizeof(quit),NULL);
+
+	//关闭客户端的socket
+	//closesocket(m_ClientSocket);
 }

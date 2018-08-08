@@ -31,6 +31,7 @@ public:
 	CEdit m_wndChatData;
 	afx_msg void OnBnClickedSendBtn();
 	CUserClient* m_pUserClient;
+	void AddChat(CString strChat, CString strIP);
 };
 
 
