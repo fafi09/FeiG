@@ -132,8 +132,10 @@ UINT CUserServer::UserThread(LPVOID pParam)
 			break;
 		case NETCMDID_USERCHAT:
 			pthis->OnUserChat((LPUSERCHAT)&packet,wszFromIp);
+			break;
 		case NETCMDID_USERQUIT:
 			pthis->OnUserQuit((LPUSERQUIT)&packet,wszFromIp);
+			break;
 		}
 
 

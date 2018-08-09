@@ -163,7 +163,7 @@ BOOL CUserClient::Broadcast(void)
 
 BOOL CUserClient::sendData(CHAR* pszData, UINT nlen, LPCTSTR pszIP)
 {
-	SOCKET _socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	
 	sockaddr_in addr = {0};
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(USERSERVER_PORT);
@@ -182,6 +182,7 @@ BOOL CUserClient::sendData(CHAR* pszData, UINT nlen, LPCTSTR pszIP)
 
 		addr.sin_addr.S_un.S_addr = inet_addr(cip);
 
+		SOCKET _socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 		sendto(_socket, pszData, nlen, 0, (sockaddr*)&addr, sizeof(addr));
 
 		closesocket(_socket);
