@@ -40,6 +40,9 @@ public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedButtonFiledlg();
 	afx_msg void OnBnClickedButtonCancel();
+	CListCtrl m_wndListRecvFile;
+	afx_msg void OnBnClickedButtonSavecancel();
+	afx_msg void OnBnClickedButtonSavedlg();
 };
 
 

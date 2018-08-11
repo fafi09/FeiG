@@ -27,6 +27,7 @@ void CChatView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHAT_CONTENT, m_wndChatData);
 	DDX_Control(pDX, IDC_LIST_FILE, m_wndFileList);
 	DDX_Control(pDX, IDC_STATIC_ZILIAO, m_wndStaticZiLiao);
+	DDX_Control(pDX, IDC_LIST_RECVFILE, m_wndListRecvFile);
 }
 
 BEGIN_MESSAGE_MAP(CChatView, CFormView)
@@ -35,6 +36,8 @@ BEGIN_MESSAGE_MAP(CChatView, CFormView)
 	ON_WM_CREATE()
 	ON_BN_CLICKED(IDC_BUTTON_FILEDLG, &CChatView::OnBnClickedButtonFiledlg)
 	ON_BN_CLICKED(IDC_BUTTON_CANCEL, &CChatView::OnBnClickedButtonCancel)
+	ON_BN_CLICKED(IDC_BUTTON_SAVECANCEL, &CChatView::OnBnClickedButtonSavecancel)
+	ON_BN_CLICKED(IDC_BUTTON_SAVEDLG, &CChatView::OnBnClickedButtonSavedlg)
 END_MESSAGE_MAP()
 
 
@@ -130,7 +133,16 @@ void CChatView::OnInitialUpdate()
 		m_wndFileList.InsertColumn(3,TEXT("路径"),LVCFMT_LEFT, 100, -1);
 	}
 	
-	// TODO: 在此添加专用代码和/或调用基类
+	//初始化接收的文件列表的列名
+	isExist = m_wndListRecvFile.GetColumn(0, &col);
+	if(isExist == FALSE)
+	{
+		m_wndListRecvFile.InsertColumn(0,TEXT("名称"),LVCFMT_LEFT, 100, -1);
+		m_wndListRecvFile.InsertColumn(1,TEXT("类型"),LVCFMT_LEFT, 100, -1);
+		m_wndListRecvFile.InsertColumn(2,TEXT("大小"),LVCFMT_LEFT, 100, -1);
+		m_wndListRecvFile.InsertColumn(3,TEXT("路径"),LVCFMT_LEFT, 100, -1);
+	}
+	
 }
 
 
@@ -142,13 +154,19 @@ void CChatView::OnBnClickedButtonFiledlg()
 	{
 		CString strFileName = fileDlg.GetFileName();
 		int nItem = m_wndFileList.InsertItem(0, strFileName);
+		CString strFilePath = fileDlg.GetPathName();
+
 
 		//打开文件
 		CFile file;
 		CString strFileSize;
-		
-		if ( !file.Open( strFileName, CFile::modeReadWrite ) )
+		CFileException e;
+
+		if ( !file.Open( strFilePath, CFile::modeReadWrite, &e) )
 		{
+			TCHAR szError[1024];
+			e.GetErrorMessage(szError, 1024);
+
 			return;
 		}
 		else
@@ -167,4 +185,23 @@ void CChatView::OnBnClickedButtonFiledlg()
 void CChatView::OnBnClickedButtonCancel()
 {
 	m_wndFileList.DeleteAllItems();
+}
+
+
+void CChatView::OnBnClickedButtonSavecancel()
+{
+	m_wndListRecvFile.DeleteAllItems();
+}
+
+
+void CChatView::OnBnClickedButtonSavedlg()
+{
+	CFileDialog recvDlg(FALSE);
+	if(IDOK == recvDlg.DoModal())
+	{
+		CString strFileName = recvDlg.GetFileName();
+		CString strFilePath = recvDlg.GetPathName();
+
+		return;
+	}
 }
