@@ -45,7 +45,7 @@ BOOL CFileClient::ConnectServer(LPCSTR pszSvrIP)
 BOOL CFileClient::SendFile(LPCTSTR pszFilePath, CStatic * pwnStaticSend, CProgressCtrl * pwndProgress)
 {
 	//发送文件的大小名称等信息
-
+	return TRUE;
 }
 
 
@@ -64,4 +64,6 @@ BOOL CFileClient::SendData(LPVOID pData, DWORD nLen)
 		nLeft = nLeft - nSend;
 		pTempData = pTempData + nSend;
 	}
+
+	return TRUE;
 }

@@ -14,6 +14,7 @@ CFileServer::~CFileServer(void)
 
 BOOL CFileServer::InitServer(void)
 {
+	return TRUE;
 }
 
 
